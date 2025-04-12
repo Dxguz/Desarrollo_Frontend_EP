@@ -13,13 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const API_ENDPOINT = '/.netlify/functions/agricultores'; // Endpoint de la función de Netlify
 
     // --- Funciones de Utilidad ---
-    const displayMessage = (element, message, isError = false) => {
-        element.textContent = message;
-        element.style.color = isError ? 'red' : 'green';
-        element.style.display = 'block';
-        setTimeout(() => {
-            element.style.display = 'none';
-        }, 3000);
+    const displayAlert = (message) => {
+        alert(message);
     };
 
     const clearForm = (form) => {
@@ -51,15 +46,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok) {
                 const data = await response.json();
-                displayMessage(agregarMensajeDiv, data.message || 'Agricultor agregado exitosamente.');
+                displayAlert(data.message || 'Agricultor agregado exitosamente.');
                 clearForm(agregarForm);
+                // Opcional: Recargar la lista de agricultores después de agregar
+                // mostrarRegistroBtn.click();
             } else {
                 const error = await response.json();
-                displayMessage(agregarMensajeDiv, error.message || 'Error al agregar el agricultor.', true);
+                alert(error.message || 'Error al agregar el agricultor.');
             }
         } catch (error) {
             console.error('Error:', error);
-            displayMessage(agregarMensajeDiv, 'Error de conexión con el servidor.', true);
+            alert('Error de conexión con el servidor al agregar.');
         }
     });
 
@@ -80,15 +77,19 @@ document.addEventListener('DOMContentLoaded', () => {
                                                    <p><strong>Email:</strong> ${agricultor.email || 'N/A'}</p>
                                                    <p><strong>Cultivo:</strong> ${agricultor.tipo_cultivo || 'N/A'}</p>
                                                    <p><strong>Municipio:</strong> ${agricultor.municipio || 'N/A'}</p>`;
+                displayAlert(`Agricultor con cédula ${cedula} encontrado.`);
             } else if (response.status === 404) {
                 resultadoConsultaDiv.textContent = 'No se encontró ningún agricultor con esa cédula.';
+                alert('Agricultor no encontrado.');
             } else {
                 const error = await response.json();
                 resultadoConsultaDiv.textContent = error.message || 'Error al consultar el agricultor.';
+                alert('Error al consultar el agricultor.');
             }
         } catch (error) {
             console.error('Error:', error);
-            resultadoConsultaDiv.textContent = 'Error de conexión con el servidor.';
+            resultadoConsultaDiv.textContent = 'Error de conexión con el servidor al consultar.';
+            alert('Error de conexión con el servidor al consultar.');
         }
     });
 
@@ -104,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (formData.get('municipio-actualizar')) datosActualizados.municipio = formData.get('municipio-actualizar');
 
         if (Object.keys(datosActualizados).length === 0) {
-            displayMessage(actualizarMensajeDiv, 'Por favor, ingrese al menos un dato para actualizar.', true);
+            alert('Por favor, ingrese al menos un dato para actualizar.');
             return;
         }
 
@@ -119,18 +120,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok) {
                 const data = await response.json();
-                displayMessage(actualizarMensajeDiv, data.message || 'Agricultor actualizado exitosamente.');
+                displayAlert(data.message || 'Agricultor actualizado exitosamente.');
                 clearForm(actualizarForm);
+                // Opcional: Recargar la lista después de actualizar
+                // mostrarRegistroBtn.click();
             } else if (response.status === 404) {
                 const error = await response.json();
-                displayMessage(actualizarMensajeDiv, error.message || 'No se encontró ningún agricultor con esa cédula.', true);
+                alert(error.message || 'No se encontró ningún agricultor con esa cédula para actualizar.');
             } else {
                 const error = await response.json();
-                displayMessage(actualizarMensajeDiv, error.message || 'Error al actualizar el agricultor.', true);
+                alert(error.message || 'Error al actualizar el agricultor.');
             }
         } catch (error) {
             console.error('Error:', error);
-            displayMessage(actualizarMensajeDiv, 'Error de conexión con el servidor.', true);
+            alert('Error de conexión con el servidor al actualizar.');
         }
     });
 
@@ -146,18 +149,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok) {
                 const data = await response.json();
-                displayMessage(eliminarMensajeDiv, data.message || 'Agricultor eliminado exitosamente.');
+                displayAlert(data.message || 'Agricultor eliminado exitosamente.');
                 clearForm(eliminarForm);
+                // Opcional: Recargar la lista después de eliminar
+                // mostrarRegistroBtn.click();
             } else if (response.status === 404) {
                 const error = await response.json();
-                displayMessage(eliminarMensajeDiv, error.message || 'No se encontró ningún agricultor con esa cédula.', true);
+                alert(error.message || 'No se encontró ningún agricultor con esa cédula para eliminar.');
             } else {
                 const error = await response.json();
-                displayMessage(eliminarMensajeDiv, error.message || 'Error al eliminar el agricultor.', true);
+                alert(error.message || 'Error al eliminar el agricultor.');
             }
         } catch (error) {
             console.error('Error:', error);
-            displayMessage(eliminarMensajeDiv, 'Error de conexión con el servidor.', true);
+            alert('Error de conexión con el servidor al eliminar.');
         }
     });
 
@@ -205,10 +210,12 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 const error = await response.json();
                 listaAgricultores.innerHTML = `<p class="error-message">${error.message || 'Error al obtener el registro de agricultores.'}</p>`;
+                alert('Error al obtener el registro de agricultores.');
             }
         } catch (error) {
             console.error('Error:', error);
-            listaAgricultores.innerHTML = '<p class="error-message">Error de conexión con el servidor.</p>';
+            listaAgricultores.innerHTML = '<p class="error-message">Error de conexión con el servidor al obtener el registro.</p>';
+            alert('Error de conexión con el servidor al obtener el registro.');
         }
     });
 });
