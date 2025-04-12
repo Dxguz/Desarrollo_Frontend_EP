@@ -1,2 +1,8 @@
 [build]
+  publish = "frontend"
   functions = "netlify/functions"
+
+[[redirects]]
+  from = "/.netlify/functions/*"
+  to = "/:splat"
+  status = 200
