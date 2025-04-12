@@ -1,9 +1,8 @@
-// netlify/functions/agricultores.js
-const data = []; // Simulación de una base de datos en memoria (para fines de ejemplo)
+const data = []; // Simulación de una base de datos en memoria
 
 exports.handler = async (event, context) => {
-    const { httpMethod, path } = event;
-    const parts = path.split('/').filter(Boolean); // Obtiene los segmentos de la ruta
+    const { httpMethod, path, body } = event;
+    const parts = path.split('/').filter(Boolean);
     const cedula = parts.length > 1 ? parts[1] : null;
 
     switch (httpMethod) {
@@ -22,8 +21,7 @@ exports.handler = async (event, context) => {
             }
         case 'POST':
             try {
-                const body = JSON.parse(event.body);
-                const nuevoAgricultor = { ...body };
+                const nuevoAgricultor = JSON.parse(body);
                 data.push(nuevoAgricultor);
                 return {
                     statusCode: 201,
@@ -40,10 +38,10 @@ exports.handler = async (event, context) => {
                 return { statusCode: 400, body: JSON.stringify({ message: 'Se requiere la cédula para actualizar.' }) };
             }
             try {
-                const body = JSON.parse(event.body);
+                const datosActualizados = JSON.parse(body);
                 const index = data.findIndex(a => a.cedula === cedula);
                 if (index !== -1) {
-                    data[index] = { ...data[index], ...body };
+                    data[index] = { ...data[index], ...datosActualizados };
                     return {
                         statusCode: 200,
                         body: JSON.stringify({ message: 'Agricultor actualizado correctamente.' }),

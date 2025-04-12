@@ -6,13 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const mostrarRegistroBtn = document.getElementById('mostrar-registro');
     const listaAgricultores = document.getElementById('lista-agricultores');
     const resultadoConsultaDiv = document.getElementById('resultado-consulta');
-    const agregarMensajeDiv = document.getElementById('agregar-mensaje');
-    const actualizarMensajeDiv = document.getElementById('actualizar-mensaje');
-    const eliminarMensajeDiv = document.getElementById('eliminar-mensaje');
 
     const API_ENDPOINT = '/.netlify/functions/agricultores'; // Endpoint de la función de Netlify
 
-    // --- Funciones de Utilidad ---
     const displayAlert = (message) => {
         alert(message);
     };
@@ -48,8 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
                 displayAlert(data.message || 'Agricultor agregado exitosamente.');
                 clearForm(agregarForm);
-                // Opcional: Recargar la lista de agricultores después de agregar
-                // mostrarRegistroBtn.click();
+                mostrarRegistroBtn.click(); // Recargar la lista después de agregar
             } else {
                 const error = await response.json();
                 alert(error.message || 'Error al agregar el agricultor.');
@@ -122,8 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
                 displayAlert(data.message || 'Agricultor actualizado exitosamente.');
                 clearForm(actualizarForm);
-                // Opcional: Recargar la lista después de actualizar
-                // mostrarRegistroBtn.click();
+                mostrarRegistroBtn.click(); // Recargar la lista después de actualizar
             } else if (response.status === 404) {
                 const error = await response.json();
                 alert(error.message || 'No se encontró ningún agricultor con esa cédula para actualizar.');
@@ -151,8 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
                 displayAlert(data.message || 'Agricultor eliminado exitosamente.');
                 clearForm(eliminarForm);
-                // Opcional: Recargar la lista después de eliminar
-                // mostrarRegistroBtn.click();
+                mostrarRegistroBtn.click(); // Recargar la lista después de eliminar
             } else if (response.status === 404) {
                 const error = await response.json();
                 alert(error.message || 'No se encontró ningún agricultor con esa cédula para eliminar.');
