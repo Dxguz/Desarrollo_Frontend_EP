@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cultivida - Registro de Agricultores de Ubaté</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f4f7f6;
+            margin: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid #d9e0e7;
+        }
+        h2 {
+            color: #21d099;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #5e6c7c;
+            font-size: 0.9em;
+        }
+        input[type="text"],
+        input[type="email"],
+        select {
+            width: calc(100% - 12px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #d9e0e7;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #21d099;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #registro-container {
+            grid-column: 1 / -1;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid #d9e0e7;
+        }
+        #lista-agricultores {
+            list-style-type: none;
+            padding: 0;
+        }
+        #lista-agricultores li {
+            border-bottom: 1px solid #eee;
+            padding: 8px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #lista-agricultores li:last-child {
+            border-bottom: none;
+        }
+        .accion-buttons button {
+            margin-left: 5px;
+            padding: 5px 10px;
+            font-size: 0.8em;
+        }
+        .success-message {
+            color: green;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Agregar Agricultor</h2>
+        <form id="agregar-agricultor-form">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" required>
+
+            <label for="cedula">Cédula:</label>
+            <input type="text" id="cedula" required>
+
+            <label for="email">Correo Electrónico:</label>
+            <input type="email" id="email" required>
+
+            <label for="tipo_cultivo">Tipo de Cultivo:</label>
+            <input type="text" id="tipo_cultivo" required>
+
+            <label for="municipio">Municipio:</label>
+            <select id="municipio" required>
+                <option value="">Seleccione un municipio</option>
+                <option value="Ubaté">Ubaté</option>
+                <option value="Carmen de Carupa">Carmen de Carupa</option>
+                <option value="Cucunubá">Cucunubá</option>
+                <option value="Fúquene">Fúquene</option>
+                <option value="Guachetá">Guachetá</option>
+                <option value="Lenguazaque">Lenguazaque</option>
+                <option value="Susa">Susa</option>
+                <option value="Sutatausa">Sutatausa</option>
+                <option value="Tausa">Tausa</option>
+                </select>
+            <button type="submit">Agregar</button>
+            <div id="agregar-mensaje" class="success-message error-message" style="display: none;"></div>
+        </form>
+    </div>
+
+    <div class="form-container">
+        <h2>Consultar Agricultor</h2>
+        <form id="consultar-agricultor-form">
+            <label for="cedula-consultar">Cédula:</label>
+            <input type="text" id="cedula-consultar" required>
+            <button type="submit">Consultar</button>
+            <div id="resultado-consulta"></div>
+        </form>
+    </div>
+
+    <div class="form-container">
+        <h2>Actualizar Agricultor</h2>
+        <form id="actualizar-agricultor-form">
+            <label for="cedula-actualizar">Cédula (para actualizar):</label>
+            <input type="text" id="cedula-actualizar" required>
+
+            <label for="nombre-actualizar">Nuevo Nombre:</label>
+            <input type="text" id="nombre-actualizar">
+
+            <label for="email-actualizar">Nuevo Correo Electrónico:</label>
+            <input type="email" id="email-actualizar">
+
+            <label for="tipo_cultivo-actualizar">Nuevo Tipo de Cultivo:</label>
+            <input type="text" id="tipo_cultivo-actualizar">
+
+            <label for="municipio-actualizar">Nuevo Municipio:</label>
+            <select id="municipio-actualizar">
+                <option value="">Seleccione un municipio</option>
+                <option value="Ubaté">Ubaté</option>
+                <option value="Carmen de Carupa">Carmen de Carupa</option>
+                <option value="Cucunubá">Cucunubá</option>
+                <option value="Fúquene">Fúquene</option>
+                <option value="Guachetá">Guachetá</option>
+                <option value="Lenguazaque">Lenguazaque</option>
+                <option value="Susa">Susa</option>
+                <option value="Sutatausa">Sutatausa</option>
+                <option value="Tausa">Tausa</option>
+            </select>
+            <button type="submit">Actualizar</button>
+            <div id="actualizar-mensaje" class="success-message error-message" style="display: none;"></div>
+        </form>
+    </div>
+
+    <div class="form-container">
+        <h2>Eliminar Agricultor</h2>
+        <form id="eliminar-agricultor-form">
+            <label for="cedula-eliminar">Cédula:</label>
+            <input type="text" id="cedula-eliminar" required>
+            <button type="submit">Eliminar</button>
+            <div id="eliminar-mensaje" class="success-message error-message" style="display: none;"></div>
+        </form>
+    </div>
+
+    <div id="registro-container">
+        <h2>Agricultores Registrados</h2>
+        <button id="mostrar-registro">Mostrar Registro</button>
+        <ul id="lista-agricultores">
+            </ul>
+    </div>
+
+    <script src="./frontend/script.js"></script>
+</body>
+</html>
